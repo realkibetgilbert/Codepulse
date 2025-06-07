@@ -1,0 +1,47 @@
+INSERT INTO [CodepulseDb].[dbo].[BlogPosts] 
+    ([Title], [ShortDescription], [Content], [FeaturedImageUrl], [UrlHandle], [PublishedDate], [Author], [IsVisible])
+VALUES 
+    ('Introduction to Blazor', 
+     'Learn how to build web applications using Blazor and .NET.',
+     'Blazor is a Microsoft framework that allows developers to build interactive web applications using C# instead of JavaScript...',
+     'https://example.com/images/blazor-intro.jpg', 
+     'introduction-to-blazor', 
+     '2025-02-17T16:18:45.249', 
+     'Gilbert Kibet', 
+     1),
+
+    ('Mastering ASP.NET Core', 
+     'A complete guide to mastering ASP.NET Core for building modern web APIs and applications.',
+     'ASP.NET Core is a cross-platform, high-performance framework for building cloud-based applications...',
+     'https://example.com/images/aspnet-core.jpg', 
+     'mastering-aspnet-core', 
+     '2025-02-17T16:20:00.000', 
+     'Gilbert Kibet', 
+     1),
+
+    ('Understanding Dependency Injection in .NET', 
+     'A deep dive into dependency injection and how it simplifies .NET application development.',
+     'Dependency Injection (DI) is a software design pattern that allows developers to achieve better code maintainability and testability...',
+     'https://example.com/images/di-dotnet.jpg', 
+     'understanding-dependency-injection', 
+     '2025-02-17T16:22:30.500', 
+     'Gilbert Kibet', 
+     1),
+
+    ('Getting Started with Azure Blob Storage', 
+     'A beginner-friendly guide on how to store and manage files in Azure Blob Storage.',
+     'Azure Blob Storage is Microsoft’s object storage solution that allows developers to store unstructured data...',
+     'https://example.com/images/azure-blob.jpg', 
+     'getting-started-with-azure-blob', 
+     '2025-02-17T16:25:15.123', 
+     'Gilbert Kibet', 
+     1),
+
+    ('Building Full-Stack Apps with Angular and .NET', 
+     'A step-by-step guide to developing full-stack applications using Angular and ASP.NET Core.',
+     'By combining Angular for frontend development and ASP.NET Core for backend services, developers can build scalable full-stack applications...',
+     'https://example.com/images/angular-dotnet.jpg', 
+     'full-stack-angular-dotnet', 
+     '2025-02-17T16:30:00.000', 
+     'Gilbert Kibet', 
+     1);
