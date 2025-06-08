@@ -8,13 +8,11 @@ namespace Codepulse.API.Application.Features.Categ.Services
 {
     public class CategoryService : ICategoryService
     {
-        private readonly IMapper _mapper;
         private readonly ICategoryRepository _repository;
         private readonly ICategoryMapper _categoryMapper;
 
-        public CategoryService(IMapper mapper, ICategoryRepository repository,ICategoryMapper categoryMapper)
+        public CategoryService(ICategoryRepository repository,ICategoryMapper categoryMapper)
         {
-            _mapper = mapper;
             _repository = repository;
             _categoryMapper = categoryMapper;
         }
@@ -23,7 +21,7 @@ namespace Codepulse.API.Application.Features.Categ.Services
         {
             var category = _categoryMapper.ToDomain(dto);
             await _repository.CreateAsync(category);
-            return _mapper.Map<CategoryToDisplayDto>(category);
+            return _categoryMapper.ToDisplay(category);
         }
         public async Task<List<CategoryToDisplayDto>> GetAllAsync(string? query, string? sortBy, string? sortDirection, int? pageNumber, int? pageSize)
         {

@@ -1,11 +1,12 @@
 ﻿using Codepulse.API.Application.Features.Img.Services;
 using Codepulse.API.Application.Mappers.Img.Interfaces;
 using Codepulse.API.Domain.Interfaces;
+using Codepulse.API.Test.Services.Image.TestData;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Moq;
 
-namespace Codepulse.API.Test.ServicesTests
+namespace Codepulse.API.Test.Services.Image
 {
     public class ImageServiceTests
     {
@@ -20,22 +21,16 @@ namespace Codepulse.API.Test.ServicesTests
             _imageService = new ImageService(_imageRepoMock.Object, _imageMapperMock.Object);
         }
 
-        [Fact]
-        public async Task UploadImageAsync_InvalidFile_ThrowsArgumentException()
+        [Theory]
+        [MemberData(nameof(InvalidFileTestData.InvalidFiles), MemberType = typeof(InvalidFileTestData))]
+        public async Task UploadImageAsync_InvalidFile_ThrowsArgumentException(IFormFile invalidFile)
         {
-            // Arrange
-            var invalidFile = new FormFile(new MemoryStream(new byte[0]), 0, 0, "Data", "badfile.txt")
-            {
-                Headers = new HeaderDictionary(),
-                ContentType = "text/plain"
-            };
-
             // Act
-            var act = async () => await _imageService.UploadImageAsync(invalidFile, "file", "title");
+            var act = async () => await _imageService.UploadImageAsync(invalidFile, "testfile", "title");
 
             // Assert
             await act.Should().ThrowAsync<ArgumentException>()
-                      .WithMessage("*unsupported file format*");
+                     .WithMessage("*unsupported file format*");
         }
 
     }

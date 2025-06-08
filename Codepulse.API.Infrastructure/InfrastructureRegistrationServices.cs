@@ -13,7 +13,6 @@ namespace Codepulse.API.Infrastructure
             services.AddScoped<IImageRepository, ImageRepository>();
             services.AddScoped<ITokenRepository, TokenRepository>();
 
-
             return services;
         }
     }
