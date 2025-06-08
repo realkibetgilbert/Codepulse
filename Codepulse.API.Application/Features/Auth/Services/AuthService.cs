@@ -123,8 +123,8 @@ namespace Codepulse.API.Application.Features.Auth.Services
 
             var loginResponse = new LoginResponseDto
             {
-                Email = loginDto.UserName,
                 Token = jwtToken,
+                Email = loginDto.UserName,
                 Roles = roles.ToList()
             };
 

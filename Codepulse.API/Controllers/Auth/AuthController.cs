@@ -1,6 +1,7 @@
 ﻿using Codepulse.API.Application.DTOs.Auth;
 using Codepulse.API.Application.Features.Auth.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Codepulse.API.Controllers.Auth
 {
@@ -56,7 +57,10 @@ namespace Codepulse.API.Controllers.Auth
 
             if (isSuccess)
             {
-                return Ok(result);
+               
+                var jsonRes = JsonConvert.SerializeObject(result);
+
+                return Content(jsonRes, "application/json");
             }
 
             return BadRequest(result);
