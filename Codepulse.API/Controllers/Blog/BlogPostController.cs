@@ -3,7 +3,7 @@ using Codepulse.API.Application.Features.Blog.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Codepulse.API.Controllers
+namespace Codepulse.API.Controllers.Blog
 {
     [Route("api/[controller]")]
     [ApiController]

@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using Codepulse.API.Application.DTOs.Category;
 using Codepulse.API.Application.Features.Categ.Interfaces;
-using Codepulse.API.Domain.Entities;
+using Codepulse.API.Application.Mappers.Categ.Interfaces;
 using Codepulse.API.Domain.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace Codepulse.API.Application.Features.Categ.Services
 {
@@ -11,34 +10,36 @@ namespace Codepulse.API.Application.Features.Categ.Services
     {
         private readonly IMapper _mapper;
         private readonly ICategoryRepository _repository;
+        private readonly ICategoryMapper _categoryMapper;
 
-        public CategoryService(IMapper mapper, ICategoryRepository repository)
+        public CategoryService(IMapper mapper, ICategoryRepository repository,ICategoryMapper categoryMapper)
         {
             _mapper = mapper;
             _repository = repository;
+            _categoryMapper = categoryMapper;
         }
 
         public async Task<CategoryToDisplayDto> CreateAsync(CategoryToCreateDto dto)
         {
-            var category = _mapper.Map<Category>(dto);
+            var category = _categoryMapper.ToDomain(dto);
             await _repository.CreateAsync(category);
             return _mapper.Map<CategoryToDisplayDto>(category);
         }
         public async Task<List<CategoryToDisplayDto>> GetAllAsync(string? query, string? sortBy, string? sortDirection, int? pageNumber, int? pageSize)
         {
             var categories = await _repository.GetAllAsync(query, sortBy, sortDirection, pageNumber, pageSize);
-            return _mapper.Map<List<CategoryToDisplayDto>>(categories);
+            return _categoryMapper.ToDisplayList(categories);
         }
         public async Task<CategoryToDisplayDto?> GetByIdAsync(long id)
         {
             var category = await _repository.GetByIdAsync(id);
             if (category == null) return null;
 
-            return _mapper.Map<CategoryToDisplayDto>(category);
+            return _categoryMapper.ToDisplay(category);
         }
         public async Task<CategoryToDisplayDto?> UpdateAsync(long id, CategoryToUpdateDto categoryToUpdateDto)
         {
-            var categoryDomain = _mapper.Map<Category>(categoryToUpdateDto);
+            var categoryDomain = _categoryMapper.ToDomain(categoryToUpdateDto, id);
             categoryDomain.Id = id;
 
             var updatedCategory = await _repository.UpdateAsync(categoryDomain);
@@ -47,7 +48,7 @@ namespace Codepulse.API.Application.Features.Categ.Services
                 return null;
             }
 
-            return _mapper.Map<CategoryToDisplayDto>(updatedCategory);
+            return _categoryMapper.ToDisplay(updatedCategory);  
         }
         public async Task<CategoryToDisplayDto?> DeleteAsync(long id)
         {
@@ -56,7 +57,7 @@ namespace Codepulse.API.Application.Features.Categ.Services
             if (deletedCategory == null)
                 return null;
 
-            return _mapper.Map<CategoryToDisplayDto>(deletedCategory);
+            return _categoryMapper.ToDisplay(deletedCategory);
         }
         public async Task<int> CountAsync()
         {

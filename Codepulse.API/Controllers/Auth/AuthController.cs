@@ -2,7 +2,7 @@
 using Codepulse.API.Application.Features.Auth.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Codepulse.API.Controllers
+namespace Codepulse.API.Controllers.Auth
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -17,16 +17,17 @@ namespace Codepulse.API.Controllers
         [Route("Role")]
         public async Task<IActionResult> CreateRole([FromBody] RoleNameDto roleNameDto)
         {
+
             var result = await _authService.CreateRoleAsync(roleNameDto);
 
             if (result.Succeeded)
             {
-                return Ok(new { Name = roleNameDto.Name });
+                return Ok(new { roleNameDto.Name });
             }
 
             return BadRequest(result.Errors);
         }
-        
+
         [HttpGet]
         [Route("Role")]
         public async Task<IActionResult> GetRoles()
@@ -55,7 +56,7 @@ namespace Codepulse.API.Controllers
 
             if (isSuccess)
             {
-                return Ok(result); 
+                return Ok(result);
             }
 
             return BadRequest(result);

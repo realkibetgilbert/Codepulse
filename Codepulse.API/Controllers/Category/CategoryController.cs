@@ -1,13 +1,10 @@
-﻿using AutoMapper;
-using Codepulse.API.Application.DTOs.Category;
+﻿using Codepulse.API.Application.DTOs.Category;
 using Codepulse.API.Application.Features.Categ.Interfaces;
-using Codepulse.API.Domain.Entities;
-using Codepulse.API.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
-namespace Codepulse.API.Controllers
+namespace Codepulse.API.Controllers.Category
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -64,7 +61,6 @@ namespace Codepulse.API.Controllers
 
             return Ok(updatedCategory);
         }
-
 
         [HttpDelete]
         [Route("{id:long}")]
