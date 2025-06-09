@@ -1,8 +1,10 @@
 using System.Text;
 using Codepulse.API.Application;
+using Codepulse.API.Application.Extensions;
 using Codepulse.API.Domain.Entities;
 using Codepulse.API.Infrastructure;
 using Codepulse.API.Infrastructure.Persistence;
+using Codepulse.API.Middleware;
 using Codepulse.API.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -13,6 +15,7 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.ConfigureSerilog();
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
 // Add services to the container.
@@ -116,5 +119,5 @@ app.UseStaticFiles(new StaticFileOptions
 
 });
 app.MapControllers();
-
+app.UseMiddleware<CustomExceptionHandlerMiddleware>();
 app.Run();

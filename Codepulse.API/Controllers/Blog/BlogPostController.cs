@@ -10,6 +10,7 @@ namespace Codepulse.API.Controllers.Blog
     public class BlogPostController : ControllerBase
     {
         private readonly IBlogPostService _blogPostService;
+
         public BlogPostController(IBlogPostService blogPostService)
         {
             _blogPostService = blogPostService;
