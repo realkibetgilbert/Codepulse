@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Serilog;
 
-namespace Codepulse.API.Application.Extensions
+namespace Codepulse.API.Extensions
 {
     public static class LoggerSetupExtension
     {

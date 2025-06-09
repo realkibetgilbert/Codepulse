@@ -1,17 +1,19 @@
-using System.Text;
 using Codepulse.API.Application;
-using Codepulse.API.Application.Extensions;
 using Codepulse.API.Domain.Entities;
+using Codepulse.API.Extensions;
 using Codepulse.API.Infrastructure;
 using Codepulse.API.Infrastructure.Persistence;
+using Codepulse.API.Infrastructure.Seed;
 using Codepulse.API.Middleware;
 using Codepulse.API.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -95,7 +97,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     });
 var app = builder.Build();
+// Migrate on startup
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<CodepulseDbContext>();
+    await context.Database.MigrateAsync(); 
 
+    await DatabaseSeeder.SeedAsync(context);
+}
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -112,10 +121,10 @@ app.UseCors(options =>
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-app.UseStaticFiles(new StaticFileOptions 
-{ 
-    FileProvider= new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(),"Images")),
-    RequestPath="/Images"
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Images")),
+    RequestPath = "/Images"
 
 });
 app.MapControllers();
