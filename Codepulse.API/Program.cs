@@ -16,6 +16,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using System.Threading.RateLimiting;
+using Codepulse.API.Infrastructure.Seed.Models;
+using Microsoft.Extensions.Options;
+using System.Xml.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +38,10 @@ builder.Services.AddInfrastructureServices();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.Configure<SeederSettings>(
+    builder.Configuration.GetSection("DatabaseSeeder"));
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
@@ -134,14 +141,37 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 var app = builder.Build();
 app.UseRateLimiter();
-// Migrate on startup
+//migrate on startup
 using (var scope = app.Services.CreateScope())
 {
-    var context = scope.ServiceProvider.GetRequiredService<CodepulseDbContext>();
-    await context.Database.MigrateAsync(); 
+    var services = scope.ServiceProvider;
 
-    await DatabaseSeeder.SeedAsync(context);
+    var config = services.GetRequiredService<IConfiguration>();
+
+    try
+    {
+        var dbContext = services.GetRequiredService<CodepulseDbContext>();
+
+        // Apply any pending migrations
+        await dbContext.Database.MigrateAsync();
+
+        // Resolve Identity services
+        var userManager = services.GetRequiredService<UserManager<AuthUser>>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole<long>>>();
+        var seederOptions = services.GetRequiredService<IOptions<SeederSettings>>();
+        // Seed the database
+        await DatabaseSeeder.SeedAsync(dbContext, userManager, roleManager,seederOptions);
+    }
+    catch (Exception ex)
+    {
+        // Optional: log error or rethrow
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred during migration.");
+        throw;
+    }
 }
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

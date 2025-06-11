@@ -26,7 +26,6 @@ namespace Codepulse.API.Controllers.Category.V1
             return Ok(category);
         }
         [HttpGet]
-        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> GetAll(
         [FromQuery] string? query,
         [FromQuery] string? sortBy,
