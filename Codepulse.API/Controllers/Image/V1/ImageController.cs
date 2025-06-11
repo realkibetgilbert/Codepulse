@@ -20,11 +20,11 @@ namespace Codepulse.API.Controllers.Image.V1
 
         [HttpPost]
         [Authorize(Roles = "Writer")]
-        public async Task<IActionResult> UploadImage([FromForm] IFormFile file, [FromForm] string fileName, [FromForm] string title)
+        public async Task<IActionResult> UploadImage([FromForm] UploadImageRequest request)
         {
             try
             {
-                var result = await _imageService.UploadImageAsync(file, fileName, title);
+                var result = await _imageService.UploadImageAsync(request.File, request.FileName, request.Title);
                 return Ok(result);
             }
             catch (ArgumentException ex)
