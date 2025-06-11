@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"Writer\"\r\n}",
+					"raw": "{\r\n    \"name\": \"Reader\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -21,14 +21,12 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:7065/api/Auth/Role",
-					"protocol": "https",
+					"raw": "{{BASE_URL}}/{{version}}/Auth/Role",
 					"host": [
-						"localhost"
+						"{{BASE_URL}}"
 					],
-					"port": "7065",
 					"path": [
-						"api",
+						"{{version}}",
 						"Auth",
 						"Role"
 					]
@@ -54,14 +52,12 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:7065/api/Auth/Role",
-					"protocol": "https",
+					"raw": "{{BASE_URL}}/{{VERSION}}/Auth/Role",
 					"host": [
-						"localhost"
+						"{{BASE_URL}}"
 					],
-					"port": "7065",
 					"path": [
-						"api",
+						"{{VERSION}}",
 						"Auth",
 						"Role"
 					]
@@ -76,7 +72,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"user@example.com\",\r\n    \"password\": \"password123\",\r\n    \"roles\": [\r\n        \"Writer\"\r\n    ]\r\n}",
+					"raw": "{\r\n    \"email\": \"kibetgilly354@gmail.com\",\r\n    \"password\": \"password123\",\r\n    \"roles\": [\r\n        \"Writer\"\r\n    ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -84,13 +80,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/Auth/Role",
+					"raw": "{{BASE_URL}}/{{VERSION}}/Auth/Register",
 					"host": [
 						"{{BASE_URL}}"
 					],
 					"path": [
+						"{{VERSION}}",
 						"Auth",
-						"Role"
+						"Register"
 					]
 				}
 			},
@@ -103,7 +100,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"Username\": \"codepulse@gmail.com\",\r\n    \"Password\": \"password123\"\r\n}",
+					"raw": "{\r\n    \"Username\": \"writer@codepulse.com\",\r\n    \"Password\": \"password123\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -111,11 +108,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/Auth/Login",
+					"raw": "{{BASE_URL}}/{{version}}/Auth/Login",
 					"host": [
 						"{{BASE_URL}}"
 					],
 					"path": [
+						"{{version}}",
 						"Auth",
 						"Login"
 					]
@@ -148,11 +146,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/Category",
+					"raw": "{{BASE_URL}}/{{version}}/Category",
 					"host": [
 						"{{BASE_URL}}"
 					],
 					"path": [
+						"{{version}}",
 						"Category"
 					]
 				}
@@ -187,17 +186,19 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/Category?query=F",
+					"raw": "{{BASE_URL}}/{{VERSION}}/Category",
 					"host": [
 						"{{BASE_URL}}"
 					],
 					"path": [
+						"{{VERSION}}",
 						"Category"
 					],
 					"query": [
 						{
 							"key": "query",
-							"value": "F"
+							"value": "F",
+							"disabled": true
 						}
 					]
 				}
@@ -232,18 +233,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/Category?query=F",
+					"raw": "{{BASE_URL}}/{{VERSION}}/Category/1",
 					"host": [
 						"{{BASE_URL}}"
 					],
 					"path": [
-						"Category"
-					],
-					"query": [
-						{
-							"key": "query",
-							"value": "F"
-						}
+						"{{VERSION}}",
+						"Category",
+						"1"
 					]
 				}
 			},
@@ -274,11 +271,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/Category/1",
+					"raw": "{{BASE_URL}}/{{VERSION}}/Category/1",
 					"host": [
 						"{{BASE_URL}}"
 					],
 					"path": [
+						"{{VERSION}}",
 						"Category",
 						"1"
 					]
@@ -311,11 +309,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/Category/1",
+					"raw": "{{BASE_URL}}/{{VERSION}}/Category/1",
 					"host": [
 						"{{BASE_URL}}"
 					],
 					"path": [
+						"{{VERSION}}",
 						"Category",
 						"1"
 					]
@@ -351,11 +350,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/Category/count",
+					"raw": "{{BASE_URL}}/{{VERSION}}/Category/count",
 					"host": [
 						"{{BASE_URL}}"
 					],
 					"path": [
+						"{{VERSION}}",
 						"Category",
 						"count"
 					]
@@ -388,11 +388,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/BlogPost",
+					"raw": "{{BASE_URL}}/{{VERSION}}/BlogPost",
 					"host": [
 						"{{BASE_URL}}"
 					],
 					"path": [
+						"{{VERSION}}",
 						"BlogPost"
 					]
 				}
@@ -427,11 +428,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/BlogPost",
+					"raw": "{{BASE_URL}}/{{VERSION}}/BlogPost",
 					"host": [
 						"{{BASE_URL}}"
 					],
 					"path": [
+						"{{VERSION}}",
 						"BlogPost"
 					]
 				}
@@ -466,11 +468,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/BlogPost/1",
+					"raw": "{{BASE_URL}}/{{VERSION}}/BlogPost/1",
 					"host": [
 						"{{BASE_URL}}"
 					],
 					"path": [
+						"{{VERSION}}",
 						"BlogPost",
 						"1"
 					]
@@ -506,11 +509,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/BlogPost/getting-started-with-angular",
+					"raw": "{{BASE_URL}}/{{VERSION}}/BlogPost/getting-started-with-angular",
 					"host": [
 						"{{BASE_URL}}"
 					],
 					"path": [
+						"{{VERSION}}",
 						"BlogPost",
 						"getting-started-with-angular"
 					]
@@ -520,9 +524,6 @@
 		},
 		{
 			"name": "UpdateBlogPostById",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -534,11 +535,11 @@
 						}
 					]
 				},
-				"method": "GET",
+				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "",
+					"raw": "{\r\n    \r\n    \"title\": \"Getting Started with Angular\",\r\n    \"shortDescription\": \"An introductory guide to building single page application with Angular.\",\r\n    \"content\": \"In this post, we'll explore the basics of Angular, including components, services, and routing...\",\r\n    \"featuredImageUrl\": \"https://example.com/images/angular-guide.jpg\",\r\n    \"urlHandle\": \"getting-started-with-angular\",\r\n    \"publishedDate\": \"2025-06-07T10:00:00\",\r\n    \"author\": \"Gilbert Kibet\",\r\n    \"isVisible\": true,\r\n    \"categories\": [\r\n       3\r\n    ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -546,13 +547,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/BlogPost/getting-started-with-angular",
+					"raw": "{{BASE_URL}}/{{VERSION}}/BlogPost/1",
 					"host": [
 						"{{BASE_URL}}"
 					],
 					"path": [
+						"{{VERSION}}",
 						"BlogPost",
-						"getting-started-with-angular"
+						"1"
 					]
 				}
 			},
@@ -583,11 +585,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/BlogPost/1",
+					"raw": "{{BASE_URL}}/{{VERSION}}/BlogPost/1",
 					"host": [
 						"{{BASE_URL}}"
 					],
 					"path": [
+						"{{VERSION}}",
 						"BlogPost",
 						"1"
 					]
@@ -631,11 +634,12 @@
 					]
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/Image",
+					"raw": "{{BASE_URL}}/{{VERSION}}/Image",
 					"host": [
 						"{{BASE_URL}}"
 					],
 					"path": [
+						"{{VERSION}}",
 						"Image"
 					]
 				}
@@ -665,9 +669,9 @@
 					"formdata": []
 				},
 				"url": {
-					"raw": "{{BASE_URL}}/Image",
+					"raw": "{{VERSION}}/Image",
 					"host": [
-						"{{BASE_URL}}"
+						"{{VERSION}}"
 					],
 					"path": [
 						"Image"
@@ -675,6 +679,28 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	],
 	"variable": [
@@ -685,7 +711,12 @@
 		},
 		{
 			"key": "ACCESS_TOKEN",
-			"value": "D",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "VERSION",
+			"value": "",
 			"type": "default"
 		}
 	]
