@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,6 +84,30 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequiredUniqueChars = 1;
 }
 );
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = 429;
+    options.OnRejected = async (context, token) =>
+    {
+        context.HttpContext.Response.StatusCode = 429;
+        await context.HttpContext.Response.WriteAsync("Too many requests. Please try again later.", token);
+    };
+    options.AddPolicy("PerUser", httpContext =>
+    {
+        var userId = httpContext.User?.Identity?.IsAuthenticated == true
+            ? httpContext.User.Identity.Name
+            : httpContext.Connection.RemoteIpAddress?.ToString() ?? "anonymous";
+
+        return RateLimitPartition.GetTokenBucketLimiter(userId, _ => new TokenBucketRateLimiterOptions
+        {
+            TokenLimit = 2,                    // Max 2 requests
+            TokensPerPeriod = 2,                // Add 10 token per second
+            ReplenishmentPeriod = TimeSpan.FromSeconds(10),
+            QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+            QueueLimit = 0
+        });
+    });
+});
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -96,7 +121,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         ValidAudience = builder.Configuration["Jwt:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     });
+
 var app = builder.Build();
+app.UseRateLimiter();
 // Migrate on startup
 using (var scope = app.Services.CreateScope())
 {
@@ -127,6 +154,6 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = "/Images"
 
 });
-app.MapControllers();
+app.MapControllers().RequireRateLimiting("PerUser");
 app.UseMiddleware<CustomExceptionHandlerMiddleware>();
 app.Run();
