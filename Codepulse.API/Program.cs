@@ -26,7 +26,7 @@ builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
 // Add services to the container.
 builder.Services.AddDbContext<CodepulseDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("CodePulseConnectionString")
+options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")
 ));
 
 // Application layer services
