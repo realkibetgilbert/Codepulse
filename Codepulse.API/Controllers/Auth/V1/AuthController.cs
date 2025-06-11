@@ -3,10 +3,11 @@ using Codepulse.API.Application.Features.Auth.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace Codepulse.API.Controllers.Auth
+namespace Codepulse.API.Controllers.Auth.V1
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
@@ -57,7 +58,7 @@ namespace Codepulse.API.Controllers.Auth
 
             if (isSuccess)
             {
-               
+
                 var jsonRes = JsonConvert.SerializeObject(result);
 
                 return Content(jsonRes, "application/json");

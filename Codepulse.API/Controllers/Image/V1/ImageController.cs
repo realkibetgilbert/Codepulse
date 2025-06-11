@@ -4,10 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using System.Web.Http;
 using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
-namespace Codepulse.API.Controllers.Image
+namespace Codepulse.API.Controllers.Image.V1
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class ImageController : ControllerBase
     {
         private readonly IImageService _imageService;

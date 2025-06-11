@@ -11,6 +11,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
       <PrivateAssets>all</PrivateAssets>
@@ -30,6 +31,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controllers\Auth\V2\" />
+    <Folder Include="Controllers\Blog\V2\" />
+    <Folder Include="Controllers\Category\V2\" />
+    <Folder Include="Controllers\Image\V2\" />
     <Folder Include="Postman\" />
   </ItemGroup>
 

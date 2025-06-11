@@ -3,10 +3,11 @@ using Codepulse.API.Application.Features.Blog.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Codepulse.API.Controllers.Blog
+namespace Codepulse.API.Controllers.Blog.V1
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class BlogPostController : ControllerBase
     {
         private readonly IBlogPostService _blogPostService;
