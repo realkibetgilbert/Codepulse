@@ -1,24 +1,23 @@
 using Codepulse.API.Application;
+using Codepulse.API.Application.Utils.MappingProfiles;
 using Codepulse.API.Domain.Entities;
 using Codepulse.API.Extensions;
 using Codepulse.API.Infrastructure;
 using Codepulse.API.Infrastructure.Persistence;
 using Codepulse.API.Infrastructure.Seed;
+using Codepulse.API.Infrastructure.Seed.Models;
 using Codepulse.API.Middleware;
-using Codepulse.API.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using System.Threading.RateLimiting;
-using Codepulse.API.Infrastructure.Seed.Models;
-using Microsoft.Extensions.Options;
-using System.Xml.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +34,9 @@ builder.Services.AddApplicationServices();
 
 // Infrastructure layer services (e.g., repositories)
 builder.Services.AddInfrastructureServices();
-builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddAutoMapper(typeof(BlogPostMappingProfile));
+builder.Services.AddAutoMapper(typeof(CategoryMappingProfile));
+builder.Services.AddAutoMapper(typeof(BlogImageMappingProfile));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
@@ -152,19 +153,16 @@ using (var scope = app.Services.CreateScope())
     {
         var dbContext = services.GetRequiredService<CodepulseDbContext>();
 
-        // Apply any pending migrations
         await dbContext.Database.MigrateAsync();
 
-        // Resolve Identity services
         var userManager = services.GetRequiredService<UserManager<AuthUser>>();
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole<long>>>();
         var seederOptions = services.GetRequiredService<IOptions<SeederSettings>>();
-        // Seed the database
+
         await DatabaseSeeder.SeedAsync(dbContext, userManager, roleManager,seederOptions);
     }
     catch (Exception ex)
     {
-        // Optional: log error or rethrow
         var logger = services.GetRequiredService<ILogger<Program>>();
         logger.LogError(ex, "An error occurred during migration.");
         throw;
