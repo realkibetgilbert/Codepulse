@@ -1,20 +1,20 @@
-# CodePulse API
+# 🚀 CodePulse API
 
-CodePulse is a clean-architecture RESTful API built with **ASP.NET Core 8**, designed for managing blog posts, categories, and user authentication. It supports JWT-based authentication and includes features like rate limiting, API versioning, and role-based access control.
+**CodePulse** is a clean-architecture RESTful API built with **ASP.NET Core 8**, designed for managing blog posts, categories, and user authentication. It supports **JWT authentication**, **role-based access control**, **rate limiting**, **API versioning**, and includes **Swagger UI** for interactive API documentation.
 
 ---
 
-## 🚀 Features
+## ✨ Features
 
-- Clean Architecture with layered separation (API / Application / Domain / Infrastructure)
-- ASP.NET Core 8 + Entity Framework Core
-- JWT Authentication
-- Role-based Authorization (Reader, Writer)
-- Token Bucket Rate Limiting (per user)
-- API Versioning (v1, v2)
-- Swagger UI for interactive documentation
-- SQL Server database
-- **Docker support with stable SQL Server healthcheck and reliable container orchestration**
+- ✅ Clean Architecture (API / Application / Domain / Infrastructure)
+- ✅ ASP.NET Core 8 + Entity Framework Core
+- ✅ JWT Authentication with Identity
+- ✅ Role-based Authorization (Reader, Writer)
+- ✅ Token Bucket Rate Limiting (per user)
+- ✅ API Versioning (v1, v2)
+- ✅ Swagger UI for interactive API testing
+- ✅ SQL Server database
+- ✅ Full Docker support with health checks & environment configuration
 
 ---
 
@@ -23,32 +23,25 @@ CodePulse is a clean-architecture RESTful API built with **ASP.NET Core 8**, des
 - ASP.NET Core 8
 - EF Core
 - SQL Server
-- Identity + JWT
+- ASP.NET Core Identity + JWT
 - Swagger / Swashbuckle
 - Rate Limiting (`Microsoft.AspNetCore.RateLimiting`)
 - API Versioning (`Microsoft.AspNetCore.Mvc.Versioning`)
-- Docker (with improved containerization setup)
+- Docker + Docker Compose
 
 ---
 
-## 🛠️ Recent Improvements
-
-- ✅ Improved SQL Server healthcheck using TCP port check for better stability
-- ✅ Removed unused `DB_USER` and `DB_PASSWORD` from environment files
-- ✅ Cleaned up `docker-compose.yaml` and `.env` for clarity and best practices
-- ✅ Ensured API and SQL Server containers restart reliably with correct environment variables
-
----
-
-## 🏗️ Project Structure
+## 🔧 Project Structure
 
 ```bash
 CodePulse.API/
 │
-├── CodePulse.API/                # API Layer (Controllers, Middlewares, etc.)
-├── CodePulse.Application/       # Application Layer (Services, Interfaces, DTOs)
-├── CodePulse.Domain/            # Domain Layer (Entities, Enums, etc.)
-├── CodePulse.Infrastructure/    # Infrastructure Layer (EF DbContext, Auth, Logging)
-├── CodePulse.Persistence/       # Data access and persistence
+├── CodePulse.API/                # API Layer (Controllers, Middlewares, Program.cs)
+├── CodePulse.Application/       # Application Layer (Interfaces, DTOs, Business Logic)
+├── CodePulse.Domain/            # Domain Layer (Entities, Enums, Interfaces)
+├── CodePulse.Infrastructure/    # Infrastructure Layer (EF DbContext, JWT, Logging)
+├── CodePulse.Persistence/       # Persistence Layer (Repositories, EF Configs)
+├── docker-compose.yml           # Docker Compose setup
+├── .env.example                 # Example environment config
 ├── README.md
 └── ...
