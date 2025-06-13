@@ -140,6 +140,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 app.UseRateLimiter();
 //migrate on startup
@@ -176,13 +186,7 @@ using (var scope = app.Services.CreateScope())
     app.UseSwagger();
     app.UseSwaggerUI();
 //}
-app.UseCors(options =>
-{
-    options.AllowAnyHeader();
-    options.AllowAnyMethod();
-    options.AllowAnyOrigin();
-}
-    );
+app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

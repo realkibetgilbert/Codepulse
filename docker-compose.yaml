@@ -47,6 +47,19 @@ services:
       - codepulse-network
     restart: unless-stopped
 
+  ui:
+    build:
+      context: ./code-pulse
+      dockerfile: Dockerfile
+    container_name: codepulse-ui
+    ports:
+      - "4200:80" # Expose Angular app on localhost:4200
+    depends_on:
+      - api
+    networks:
+      - codepulse-network
+    restart: unless-stopped
+
 volumes:
   sqlserver_data:
 
