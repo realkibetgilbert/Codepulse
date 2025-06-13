@@ -47,22 +47,6 @@ CodePulse.API/
 └── ...
 ```
 
-# CodePulse – Clean Architecture Blog API
-
-CodePulse is a clean-architecture RESTful API built with ASP.NET Core 8, designed to power a blog platform with secure user management, blog publishing, and modern API standards.
-
-## Features
-
-- **Layered architecture** (API, Application, Domain, Infrastructure)
-- **JWT authentication** with Reader and Writer roles
-- **API versioning** support (`/api/v1/...`, `/api/v2/...`)
-- **Token Bucket Rate Limiting** per authenticated user
-- **Swagger UI** for interactive API documentation
-- **Postman collection** included for easy local testing
-- **Entity Framework Core + SQL Server**
-- **Seeds default users and roles** for quick startup
-- **Dockerized** using Docker Compose for full development environment orchestration
-
 ---
 
 ## Architecture Overview
