@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: codepulse-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: ${DB_SA_PASSWORD}
+      MSSQL_PID: "Express"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+      # Note: The official SQL Server image does not support automatic init scripts.
+      # - ./init-scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "timeout 1 bash -c '</dev/tcp/localhost/1433'"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - codepulse-network
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: codepulse-api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__DefaultConnection: ${CONNECTION_STRING}
+      DB_HOST: sqlserver
+      DB_PORT: 1433
+      DB_NAME: ${DB_NAME}
+      # DB_USER and DB_PASSWORD are not needed if using the connection string directly
+      # DB_USER: ${DB_USER}
+      # DB_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5000:8080"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    networks:
+      - codepulse-network
+    restart: unless-stopped
+
+volumes:
+  sqlserver_data:
+
+networks:
+  codepulse-network:
+    driver: bridge

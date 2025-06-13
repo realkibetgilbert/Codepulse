@@ -6,20 +6,31 @@ namespace Codepulse.API.Extensions
     public static class LoggerSetupExtension
     {
         public static WebApplicationBuilder ConfigureSerilog(this WebApplicationBuilder builder)
-        {
-            builder.Host.UseSerilog();
+{
+    builder.Host.UseSerilog();
 
-            var filePath = builder.Configuration["Log_Path"];
+    // Detect if running in Docker
+    var isDocker = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
 
-            Log.Logger = new
-              LoggerConfiguration().WriteTo.File(filePath,
-              rollingInterval: RollingInterval.Day)
-              .MinimumLevel.Warning()
-              .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Database.Command", Serilog.Events.LogEventLevel.Warning)
+    var loggerConfig = new LoggerConfiguration()
+        .MinimumLevel.Warning()
+        .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Database.Command", Serilog.Events.LogEventLevel.Warning);
 
-              .CreateLogger();
+    if (isDocker)
+    {
+        
+        loggerConfig.WriteTo.Console();
+    }
+    else
+    {
+        
+        var logPath = builder.Configuration["Log_Path"] ?? "C:\\Temp\\CODEPULSELOGS.Logs-.log";
+        loggerConfig.WriteTo.File(logPath, rollingInterval: RollingInterval.Day);
+    }
 
-            return builder;
-        }
+    Log.Logger = loggerConfig.CreateLogger();
+
+    return builder;
+}
     }
 }
