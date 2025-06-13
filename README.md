@@ -14,7 +14,7 @@ CodePulse is a clean-architecture RESTful API built with **ASP.NET Core 8**, des
 - API Versioning (v1, v2)
 - Swagger UI for interactive documentation
 - SQL Server database
-- Docker support (in progress)
+- **Docker support with stable SQL Server healthcheck and reliable container orchestration**
 
 ---
 
@@ -27,7 +27,16 @@ CodePulse is a clean-architecture RESTful API built with **ASP.NET Core 8**, des
 - Swagger / Swashbuckle
 - Rate Limiting (`Microsoft.AspNetCore.RateLimiting`)
 - API Versioning (`Microsoft.AspNetCore.Mvc.Versioning`)
-- Docker (for containerization)
+- Docker (with improved containerization setup)
+
+---
+
+## 🛠️ Recent Improvements
+
+- ✅ Improved SQL Server healthcheck using TCP port check for better stability
+- ✅ Removed unused `DB_USER` and `DB_PASSWORD` from environment files
+- ✅ Cleaned up `docker-compose.yaml` and `.env` for clarity and best practices
+- ✅ Ensured API and SQL Server containers restart reliably with correct environment variables
 
 ---
 
