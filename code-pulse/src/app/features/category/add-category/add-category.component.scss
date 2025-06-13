@@ -1,0 +1,12 @@
+.btn{
+    --bs-btn-border-radius: 0;
+    cursor: pointer;
+}
+.btn-color{
+    color: white;
+    background-color: var(--color-primary);
+    opacity: 1;
+    height: 40px;
+    font-weight: bolder;
+    width: 100%;
+}
