@@ -28,7 +28,13 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddDbContext<CodepulseDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")
 ));
-
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    var redisConnectionString = builder.Configuration.GetConnectionString("RedisConnection")
+        ?? builder.Configuration.GetConnectionString("Redis")
+        ?? "localhost:6379";
+    options.Configuration = redisConnectionString;
+});
 // Application layer services
 builder.Services.AddApplicationServices();
 
@@ -199,3 +205,4 @@ app.UseStaticFiles(new StaticFileOptions
 app.MapControllers().RequireRateLimiting("PerUser");
 app.UseMiddleware<CustomExceptionHandlerMiddleware>();
 app.Run();
+  

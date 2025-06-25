@@ -1,19 +1,24 @@
 ﻿using Codepulse.API.Application.DTOs.BlogPost;
+using Codepulse.API.Application.DTOs.Category;
 using Codepulse.API.Application.Features.Blog.Interfaces;
 using Codepulse.API.Application.Mappers.Blog.Interfaces;
 using Codepulse.API.Domain.Entities;
 using Codepulse.API.Domain.Interfaces;
+using Codepulse.API.Infrastructure.Catching;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace Codepulse.API.Application.Features.Blog.Services
 {
     public class BlogPostService : IBlogPostService
     {
+        private readonly IDistributedCache _cache;
         private readonly IBlogPostMapper _mapper;
         private readonly IBlogPostRepository _blogPostRepository;
         private readonly ICategoryRepository _categoryRepository;
 
-        public BlogPostService(IBlogPostMapper mapper, IBlogPostRepository blogPostRepository, ICategoryRepository categoryRepository)
+        public BlogPostService(IDistributedCache cache, IBlogPostMapper mapper, IBlogPostRepository blogPostRepository, ICategoryRepository categoryRepository)
         {
+            _cache = cache;
             _mapper = mapper;
             _blogPostRepository = blogPostRepository;
             _categoryRepository = categoryRepository;
@@ -51,16 +56,23 @@ namespace Codepulse.API.Application.Features.Blog.Services
         }
         public async Task<BlogPostToDisplay?> GetByUrlHandleAsync(string urlHandle)
         {
-            var blogPost = await _blogPostRepository.GetByUrlAsync(urlHandle);
-            if (blogPost == null) return null;
-
-            return _mapper.MapToDto(blogPost);
+            string cacheKey = $"blog:{urlHandle}";
+            var cached = await _cache.GetOrSetAsync<BlogPostToDisplay>(
+                cacheKey,
+                async () =>
+                {
+                    var blogPost = await _blogPostRepository.GetByUrlAsync(urlHandle);
+                    if (blogPost == null) return null;
+                    return _mapper.MapToDto(blogPost);
+                }
+            );
+            return cached;
         }
         public async Task<BlogPostToDisplay?> UpdateAsync(long id, BlogPostToUpdate blogPostToUpdate)
         {
             var blogPostDomain = _mapper.MapToDomain(blogPostToUpdate);
             blogPostDomain.Id = id;
-
+            blogPostDomain.PublishedDate = DateTime.UtcNow;
             blogPostDomain.Categories = new List<Category>();
             foreach (var categoryId in blogPostToUpdate.Categories)
             {

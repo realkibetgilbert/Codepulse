@@ -65,12 +65,7 @@ namespace Codepulse.API.Infrastructure.Repositories.Implementations
 
             categories = categories.Skip(skipResults ?? 0).Take(pageSize ?? 10);
 
-
             return await categories.ToListAsync();
-
-
-
-
         }
         public async Task<Category?> GetByIdAsync(long id)
         {

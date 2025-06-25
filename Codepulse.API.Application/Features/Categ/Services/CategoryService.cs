@@ -3,16 +3,20 @@ using Codepulse.API.Application.DTOs.Category;
 using Codepulse.API.Application.Features.Categ.Interfaces;
 using Codepulse.API.Application.Mappers.Categ.Interfaces;
 using Codepulse.API.Domain.Interfaces;
+using Microsoft.Extensions.Caching.Distributed;
+using Codepulse.API.Infrastructure.Catching;
 
 namespace Codepulse.API.Application.Features.Categ.Services
 {
     public class CategoryService : ICategoryService
     {
+        private readonly IDistributedCache _cache;
         private readonly ICategoryRepository _repository;
         private readonly ICategoryMapper _categoryMapper;
 
-        public CategoryService(ICategoryRepository repository,ICategoryMapper categoryMapper)
+        public CategoryService(IDistributedCache cache, ICategoryRepository repository, ICategoryMapper categoryMapper)
         {
+            _cache = cache;
             _repository = repository;
             _categoryMapper = categoryMapper;
         }
@@ -25,15 +29,30 @@ namespace Codepulse.API.Application.Features.Categ.Services
         }
         public async Task<List<CategoryToDisplayDto>> GetAllAsync(string? query, string? sortBy, string? sortDirection, int? pageNumber, int? pageSize)
         {
-            var categories = await _repository.GetAllAsync(query, sortBy, sortDirection, pageNumber, pageSize);
-            return _categoryMapper.ToDisplayList(categories);
+            string cacheKey = $"categories:all:{query}:{sortBy}:{sortDirection}:{pageNumber}:{pageSize}";
+            var cached = await _cache.GetOrSetAsync<List<CategoryToDisplayDto>>(
+                cacheKey,
+                async () =>
+                {
+                    var categories = await _repository.GetAllAsync(query, sortBy, sortDirection, pageNumber, pageSize);
+                    return _categoryMapper.ToDisplayList(categories);
+                }
+            );
+            return cached ?? new List<CategoryToDisplayDto>();
         }
         public async Task<CategoryToDisplayDto?> GetByIdAsync(long id)
         {
-            var category = await _repository.GetByIdAsync(id);
-            if (category == null) return null;
-
-            return _categoryMapper.ToDisplay(category);
+            string cacheKey = $"category:{id}";
+            var cached = await _cache.GetOrSetAsync<CategoryToDisplayDto>(
+                cacheKey,
+                async () =>
+                {
+                    var category = await _repository.GetByIdAsync(id);
+                    if (category == null) return null;
+                    return _categoryMapper.ToDisplay(category);
+                }
+            );
+            return cached;
         }
         public async Task<CategoryToDisplayDto?> UpdateAsync(long id, CategoryToUpdateDto categoryToUpdateDto)
         {
@@ -46,7 +65,7 @@ namespace Codepulse.API.Application.Features.Categ.Services
                 return null;
             }
 
-            return _categoryMapper.ToDisplay(updatedCategory);  
+            return _categoryMapper.ToDisplay(updatedCategory);
         }
         public async Task<CategoryToDisplayDto?> DeleteAsync(long id)
         {

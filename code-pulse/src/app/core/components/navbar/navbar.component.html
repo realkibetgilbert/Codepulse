@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<!-- <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container">
     <a class="navbar-brand" routerLink="/">GilbertCodes</a>
     <button
@@ -59,4 +59,90 @@
       </div>
     </div>
   </div>
+</nav> -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+  <div class="container">
+    <!-- Branding -->
+    <a class="navbar-brand fw-bold" routerLink="/">
+      <!-- <img src="assets/logo.jpg" alt="Logo" height="30" class="me-2" /> -->
+      GilbertCodes
+    </a>
+
+    <!-- Toggler for mobile -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#mainNavbar"
+      aria-controls="mainNavbar"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar Links -->
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <!-- Show only to everyone (public/unauthenticated) -->
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/blog">Blog</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/courses">Courses</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/contact">Contact</a>
+        </li>
+
+        <!-- Admin dropdown: visible only to logged-in admins (Writer role) -->
+        <ng-container *ngIf="user?.roles?.includes('Writer')">
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Admin
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" routerLink="/admin/categories">Categories</a></li>
+              <li><a class="dropdown-item" routerLink="/admin/blogposts">Blogposts</a></li>
+              <li>
+                <a (click)="onLogout()" class="dropdown-item" style="cursor:pointer;">Logout</a>
+              </li>
+            </ul>
+          </li>
+        </ng-container>
+
+        <!-- Login link: visible only to unauthenticated users -->
+        <li *ngIf="!user">
+          <a routerLink="/login" class="nav-link">Login</a>
+        </li>
+      </ul>
+
+      <!-- Hide login/logout completely -->
+      <!-- Optional: Uncomment if needed later -->
+      <!--
+      <div class="d-flex align-items-center">
+        <ng-container *ngIf="!user; else showLogout">
+          <a class="btn btn-outline-primary" routerLink="/login">Login</a>
+        </ng-container>
+        <ng-template #showLogout>
+          <span class="me-2 text-muted small">{{ user?.email }}</span>
+          <button class="btn btn-primary" (click)="onLogout()">Logout</button>
+        </ng-template>
+      </div>
+      -->
+    </div>
+  </div>
 </nav>
+

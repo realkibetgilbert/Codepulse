@@ -1,11 +1,11 @@
 <ng-container *ngIf="blogPost$ | async as blogPost; else loader">
   <div class="container">
     <div class="py-5">
-      <div class="col-12 col-md-8 col-lg-6 mx-auto">
+      <div>
         <img
           [src]="blogPost.featuredImageUrl"
           [title]="blogPost.title"
-          class="img-fluid"
+          class="img-fluid w-100"
         />
         <h1 class="mt-4">{{ blogPost.title }}</h1>
         <div class="d-flex justify-content-between mt-4">

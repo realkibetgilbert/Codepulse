@@ -26,9 +26,9 @@ namespace Codepulse.API.Application
             services.AddScoped<IBlogPostService, BlogPostService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IImageService, ImageService>();
-            services.AddScoped<IBlogPostMapper, BlogPostMapper>();
-            services.AddScoped<ICategoryMapper, CategoryMapper>();
-            services.AddScoped<IImageMapper, ImageMapper>();
+            services.AddTransient<IBlogPostMapper, BlogPostMapper>();
+            services.AddTransient<ICategoryMapper, CategoryMapper>();
+            services.AddTransient<IImageMapper, ImageMapper>();
             return services;
         }
     }

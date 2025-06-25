@@ -23,6 +23,15 @@ services:
       - codepulse-network
     restart: unless-stopped
 
+  redis:
+    image: redis:7
+    container_name: codepulse-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - codepulse-network
+    restart: unless-stopped
+
   api:
     build:
       context: .
@@ -38,11 +47,14 @@ services:
       # DB_USER and DB_PASSWORD are not needed if using the connection string directly
       # DB_USER: ${DB_USER}
       # DB_PASSWORD: ${DB_PASSWORD}
+      ConnectionStrings__RedisConnection: ${REDIS_CONNECTION_STRING}
     ports:
       - "5000:8080"
     depends_on:
       sqlserver:
         condition: service_healthy
+      redis:
+        condition: service_started
     networks:
       - codepulse-network
     restart: unless-stopped
