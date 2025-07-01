@@ -19,6 +19,7 @@ import { BlogDetailsComponent } from './features/public/blog-details/blog-detail
 import { LoginComponent } from './features/auth/login/login.component'
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { FooterComponent } from './core/components/footer/footer.component';
+import { AboutComponent } from './features/public/about/about.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,7 +34,8 @@ import { FooterComponent } from './core/components/footer/footer.component';
     HomeComponent,
     BlogDetailsComponent,
     LoginComponent,
-    FooterComponent
+    FooterComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,

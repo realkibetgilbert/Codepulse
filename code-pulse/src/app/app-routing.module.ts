@@ -11,12 +11,14 @@ import { HomeComponent } from './features/public/home/home.component';
 import { BlogDetailsComponent } from './features/public/blog-details/blog-details.component';
 import { LoginComponent } from './features/auth/login/login.component';
 import { authGuard } from './features/auth/guards/auth.guard';
+import { AboutComponent } from './features/public/about/about.component';
 
 const routes: Routes = [
  
       { path: '', component: HomeComponent },
       { path: 'login', component: LoginComponent },
       { path: 'blog/:url', component: BlogDetailsComponent },
+      { path: 'about', component: AboutComponent },
       { path: 'admin/categories', component: CategoryListComponent,canActivate:[authGuard] },
       { path: 'admin/categories/add', component: AddCategoryComponent,canActivate:[authGuard] },
       { path: 'admin/categories/:id', component: EditcategoryComponent ,canActivate:[authGuard]},
